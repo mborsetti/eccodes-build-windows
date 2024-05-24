@@ -1,3 +1,5 @@
+# These are executed in Windows PowerShell
+
 name: CI
 
 on:
@@ -10,7 +12,6 @@ jobs:
     runs-on: windows-latest
 
     env:
-#      CONDA: C:\Miniconda37-x64
       SOURCE_TAR: https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.35.0-Source.tar.gz?api=v2
       SOURCE_DIR: eccodes-2.35.0-Source
       INSTALL_DIR: C:\ECMWF
@@ -28,9 +29,6 @@ jobs:
         miniconda-version: "latest"
         auto-activate-base: true
         activate-environment: ""
-#      run: |
-#        call $env:CONDA\Scripts\activate.bat
-#        conda config --set always_yes yes
 
     - name: Download and extract source
       run: |
@@ -39,7 +37,7 @@ jobs:
 
     - name: Install Linux utils from msys
       run: |
-        conda install -c msys2 m2-bash m2-findutils m2-coreutils m2-grep m2-sed m2-gawk m2-diffutils m2-perl
+        $env:CONDA/conda.exe install -c msys2 m2-bash m2-findutils m2-coreutils m2-grep m2-sed m2-gawk m2-diffutils m2-perl
 
     - name: Install cmake and other dependencies
       run: |
@@ -69,7 +67,7 @@ jobs:
           -DENABLE_TESTS=0 `
           -DENABLE_EXTRA_TESTS=OFF `
           ..
-        nmake install
+        cmd nmake install
         copy "$env:CONDA\Library\bin\openjp2.dll" "$env:INSTALL_DIR\bin\"
         copy "$env:CONDA\Library\bin\libpng16.dll" "$env:INSTALL_DIR\bin\"
         copy "$env:CONDA\Library\bin\zlib.dll" "$env:INSTALL_DIR\bin\"
