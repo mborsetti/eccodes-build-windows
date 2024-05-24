@@ -83,7 +83,8 @@ jobs:
       shell: cmd
 
     - name: Run tests
-      run: "%INSTALL_DIR%\bin\codes_info.exe"
+      run: |
+        "%INSTALL_DIR%\bin\codes_info.exe"
       shell: cmd
 
     - name: Package artifacts
