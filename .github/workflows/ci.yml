@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    # run on latest https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
     runs-on: windows-latest
 
     env:
@@ -34,13 +35,13 @@ jobs:
 #      run: conda config --set always_yes yes
 #      shell: cmd
       
-    - name: Download and extract source
+    - name: Download and extract source  # pipe it to tar
       run: |
         curl -o sources.tar.gz $env:SOURCE_TAR
         7z x -tgzip -so sources.tar.gz | 7z x -si -ttar
 
-    - name: Install Linux utils from msys
-      run: conda install -c msys2 m2-bash m2-findutils m2-coreutils m2-grep m2-sed m2-gawk m2-diffutils m2-perl
+#    - name: Install Linux utils from msys
+#      run: conda install -c msys2 m2-bash m2-findutils m2-coreutils m2-grep m2-sed m2-gawk m2-diffutils m2-perl
       
     - name: Install cmake and other dependencies
       run: |
@@ -48,7 +49,7 @@ jobs:
         conda install libpng openjpeg
       
     - name: Set up Visual Studio environment
-      run: cmd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+      run: cmd "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
       
     - name: Build and install
       run: |
