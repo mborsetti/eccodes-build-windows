@@ -51,23 +51,23 @@ jobs:
 
     - name: Build and install
       run: |
-        cd $env:SOURCE_DIRECTORY
+        mkdir cd $env:SOURCE_DIRECTORY
         mkdir BUILD
         cd BUILD
         cmake -G "NMake Makefiles" ^
-          -D CMAKE_INSTALL_PREFIX=$env:INSTALL_DIR ^
-          -D CMAKE_BUILD_TYPE=Release ^
-          -D ENABLE_FORTRAN=0 ^
-          -D ENABLE_PYTHON=0 ^
-          -D ENABLE_NETCDF=0 ^
-          -D ENABLE_PNG=1 ^
-          -D ENABLE_JPG=1 ^
-          -D OPENJPEG_INCLUDE_DIR=$env:CONDA\Library\include\openjpeg-2.4.0 ^
-          -D IEEE_LE=1 ^
-          -D ENABLE_EXAMPLES=0 ^
-          -D ENABLE_MEMFS=0 ^
-          -D ENABLE_TESTS=0 ^
-          -D ENABLE_EXTRA_TESTS=OFF ^
+          -DCMAKE_INSTALL_PREFIX=$env:INSTALL_DIR ^
+          -DCMAKE_BUILD_TYPE=Release ^
+          -DENABLE_FORTRAN=0 ^
+          -DENABLE_PYTHON=0 ^
+          -DENABLE_NETCDF=0 ^
+          -DENABLE_PNG=1 ^
+          -DENABLE_JPG=1 ^
+          -DOPENJPEG_INCLUDE_DIR=$env:CONDA\Library\include\openjpeg-2.4.0 ^
+          -DIEEE_LE=1 ^
+          -DENABLE_EXAMPLES=0 ^
+          -DENABLE_MEMFS=0 ^
+          -DENABLE_TESTS=0 ^
+          -DENABLE_EXTRA_TESTS=OFF ^
           ..
         nmake install
         copy "$env:CONDA\Library\bin\openjp2.dll" "$env:INSTALL_DIR\bin\"
