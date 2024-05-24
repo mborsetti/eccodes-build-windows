@@ -75,7 +75,7 @@ jobs:
         copy "%CONDA%\Library\bin\zlib.dll" "%INSTALL_DIR%\bin\"
 
     - name: Run tests
-      run: "%INSTALL_DIR%\bin\codes_info.exe"
+      run: cmd "%INSTALL_DIR%\bin\codes_info.exe"
 
     - name: Package artifacts
       run: |
