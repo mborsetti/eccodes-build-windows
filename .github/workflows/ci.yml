@@ -22,18 +22,18 @@ jobs:
       shell: cmd 
 
     - name: Activate Conda environment
-      run: |
-        "%CONDA%\Scripts\activate.bat"
-      shell: cmd
-#      uses: conda-incubator/setup-miniconda@v3.0.4
-#      with:
-#        miniconda-version: "latest"
-#        auto-activate-base: true
-#        activate-environment: ""
+#      run: |
+#        "%CONDA%\Scripts\activate.bat"
+#      shell: cmd
+      uses: conda-incubator/setup-miniconda@v3.0.4
+      with:
+        miniconda-version: "latest"
+        auto-activate-base: true
+        activate-environment: ""
 
-    - name: Set up Conda
-      run: conda config --set always_yes yes
-      shell: cmd
+#    - name: Set up Conda
+#      run: conda config --set always_yes yes
+#      shell: cmd
       
     - name: Download and extract source
       run: |
@@ -92,6 +92,7 @@ jobs:
         cd C:\
         7z a "%GITHUB_WORKSPACE%\EcCodes-win-x64.zip" "%INSTALL_DIR%"
       shell: cmd
+
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
