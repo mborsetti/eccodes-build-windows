@@ -21,8 +21,9 @@ jobs:
       run: git config --global core.symlinks true
       shell: cmd 
 
-    - name: Activate Conda
-      run: "%CONDA%\Scripts\activate.bat"
+    - name: Activate Conda environment
+      run: |
+        "%CONDA%\Scripts\activate.bat"
       shell: cmd
 #      uses: conda-incubator/setup-miniconda@v3.0.4
 #      with:
@@ -51,7 +52,8 @@ jobs:
       shell: cmd
       
     - name: Set up Visual Studio environment
-      run: "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
       shell: cmd
       
     - name: Build and install
