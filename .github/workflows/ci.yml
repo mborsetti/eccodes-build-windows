@@ -51,7 +51,7 @@ jobs:
 
     - name: Build and install
       run: |
-        mkdir cd $env:SOURCE_DIRECTORY
+        cd $env:SOURCE_DIRECTORY
         mkdir BUILD
         cd BUILD
         cmake -G "NMake Makefiles" ^
