@@ -20,15 +20,16 @@ jobs:
     - name: Set up Git
       run: git config --global core.symlinks true
 
-    - name: Set up Conda
-      run: |
-        cmd $env:CONDA\Scripts\activate.bat
-        conda config --set always_yes yes
+    - name: Activate Conda
+      run: cmd $env:CONDA\Scripts\activate.bat
 #      uses: conda-incubator/setup-miniconda@v3.0.4
 #      with:
 #        miniconda-version: "latest"
 #        auto-activate-base: true
 #        activate-environment: ""
+
+    - name: Set up Conda
+      run: conda config --set always_yes yes
 
     - name: Download and extract source
       run: |
@@ -36,8 +37,7 @@ jobs:
         7z x -tgzip -so sources.tar.gz | 7z x -si -ttar
 
     - name: Install Linux utils from msys
-      run: |
-        conda install -c msys2 m2-bash m2-findutils m2-coreutils m2-grep m2-sed m2-gawk m2-diffutils m2-perl
+      run: conda install -c msys2 m2-bash m2-findutils m2-coreutils m2-grep m2-sed m2-gawk m2-diffutils m2-perl
 
     - name: Install cmake and other dependencies
       run: |
