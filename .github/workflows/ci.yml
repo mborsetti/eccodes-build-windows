@@ -19,9 +19,11 @@ jobs:
     steps:
     - name: Set up Git
       run: git config --global core.symlinks true
+      shell: cmd 
 
     - name: Activate Conda
-      run: cmd $env:CONDA\Scripts\activate.bat
+      run: "%CONDA%\Scripts\activate.bat"
+      shell: cmd
 #      uses: conda-incubator/setup-miniconda@v3.0.4
 #      with:
 #        miniconda-version: "latest"
@@ -30,56 +32,63 @@ jobs:
 
     - name: Set up Conda
       run: conda config --set always_yes yes
-
+      shell: cmd
+      
     - name: Download and extract source
       run: |
-        curl -o sources.tar.gz $env:SOURCE_TAR
+        curl -o sources.tar.gz %SOURCE_TAR%
         7z x -tgzip -so sources.tar.gz | 7z x -si -ttar
+      shell: cmd
 
     - name: Install Linux utils from msys
       run: conda install -c msys2 m2-bash m2-findutils m2-coreutils m2-grep m2-sed m2-gawk m2-diffutils m2-perl
-
+      shell: cmd
+      
     - name: Install cmake and other dependencies
       run: |
         conda install -c conda-forge cmake
         conda install libpng openjpeg
-
+      shell: cmd
+      
     - name: Set up Visual Studio environment
-      run: cmd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
-
+      run: "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+      shell: cmd
+      
     - name: Build and install
       run: |
-        cd $env:SOURCE_DIR
+        cd %SOURCE_DIR%
         mkdir BUILD
         cd BUILD
-        cmake -G "NMake Makefiles" `
-          -DCMAKE_INSTALL_PREFIX=$env:INSTALL_DIR `
-          -DCMAKE_BUILD_TYPE=Release `
-          -DENABLE_FORTRAN=0 `
-          -DENABLE_PYTHON=0 `
-          -DENABLE_NETCDF=0 `
-          -DENABLE_PNG=1 `
-          -DENABLE_JPG=1 `
-          -DOPENJPEG_INCLUDE_DIR=$env:CONDA\Library\include\openjpeg-2.4.0 `
-          -DIEEE_LE=1 `
-          -DENABLE_EXAMPLES=0 `
-          -DENABLE_MEMFS=0 `
-          -DENABLE_TESTS=0 `
-          -DENABLE_EXTRA_TESTS=OFF `
+        cmake -G "NMake Makefiles" ^
+          -D CMAKE_INSTALL_PREFIX=%INSTALL_DIR% ^
+          -D CMAKE_BUILD_TYPE=Release ^
+          -D ENABLE_FORTRAN=0 ^
+          -D ENABLE_PYTHON=0 ^
+          -D ENABLE_NETCDF=0 ^
+          -D ENABLE_PNG=1 ^
+          -D ENABLE_JPG=1 ^
+          -D OPENJPEG_INCLUDE_DIR=%CONDA%\Library\include\openjpeg-2.4.0 ^
+          -D IEEE_LE=1 ^
+          -D ENABLE_EXAMPLES=0 ^
+          -D ENABLE_MEMFS=0 ^
+          -D ENABLE_TESTS=0 ^
+          -D ENABLE_EXTRA_TESTS=OFF ^
           ..
-        cmd nmake install
-        copy "$env:CONDA\Library\bin\openjp2.dll" "$env:INSTALL_DIR\bin\"
-        copy "$env:CONDA\Library\bin\libpng16.dll" "$env:INSTALL_DIR\bin\"
-        copy "$env:CONDA\Library\bin\zlib.dll" "$env:INSTALL_DIR\bin\"
+        nmake install
+        copy "%CONDA%\Library\bin\openjp2.dll" "%INSTALL_DIR%\bin\"
+        copy "%CONDA%\Library\bin\libpng16.dll" "%INSTALL_DIR%\bin\"
+        copy "%CONDA%\Library\bin\zlib.dll" "%INSTALL_DIR%\bin\"
+      shell: cmd
 
     - name: Run tests
-      run: cmd "$env:INSTALL_DIR\bin\codes_info.exe"
+      run: "%INSTALL_DIR%\bin\codes_info.exe"
+      shell: cmd
 
     - name: Package artifacts
       run: |
         cd C:\
-        7z a "$env:GITHUB_WORKSPACE\EcCodes-win-x64.zip" "$env:INSTALL_DIR"
-
+        7z a "%GITHUB_WORKSPACE%\EcCodes-win-x64.zip" "%INSTALL_DIR%"
+      shell: cmd
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
