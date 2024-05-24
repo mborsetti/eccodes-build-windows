@@ -19,7 +19,6 @@ jobs:
     steps:
     - name: Set up Git
       run: git config --global core.symlinks true
-      shell: cmd 
 
     - name: Activate Conda environment
 #      run: |
@@ -37,24 +36,19 @@ jobs:
       
     - name: Download and extract source
       run: |
-        curl -o sources.tar.gz %SOURCE_TAR%
+        curl -o sources.tar.gz $env:SOURCE_TAR
         7z x -tgzip -so sources.tar.gz | 7z x -si -ttar
-      shell: cmd
 
     - name: Install Linux utils from msys
       run: conda install -c msys2 m2-bash m2-findutils m2-coreutils m2-grep m2-sed m2-gawk m2-diffutils m2-perl
-      shell: cmd
       
     - name: Install cmake and other dependencies
       run: |
         conda install -c conda-forge cmake
         conda install libpng openjpeg
-      shell: cmd
       
     - name: Set up Visual Studio environment
-      run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
-      shell: cmd
+      run: cmd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
       
     - name: Build and install
       run: |
@@ -84,17 +78,15 @@ jobs:
 
     - name: Run tests
       run: |
-        "%INSTALL_DIR%\bin\codes_info.exe"
-      shell: cmd
+        "$env:INSTALL_DIR\bin\codes_info.exe"
 
     - name: Package artifacts
       run: |
         cd C:\
-        7z a "%GITHUB_WORKSPACE%\EcCodes-win-x64.zip" "%INSTALL_DIR%"
-      shell: cmd
+        7z a "$env:GITHUB_WORKSPACE\EcCodes-win-x64.zip" "$env:INSTALL_DIR"
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: EcCodes-win-x64
         path: EcCodes-win-x64.zip
