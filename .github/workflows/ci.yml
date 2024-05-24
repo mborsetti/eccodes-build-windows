@@ -13,7 +13,7 @@ jobs:
 #      CONDA: C:\Miniconda37-x64
       INSTALL_DIR: C:\ECMWF
       SOURCE_DIRECTORY: eccodes-2.35.0-Source
-      SOURCE_TAR: https://confluence.ecmwf.int/display/ECC/Releases/eccodes-2.35.0-Source.tar.gz?api=v2
+      SOURCE_TAR: https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.35.0-Source.tar.gz?api=v2
 
     steps:
     - name: Checkout repository
@@ -55,14 +55,14 @@ jobs:
         mkdir BUILD
         cd BUILD
         cmake -G "NMake Makefiles" ^
-          -D CMAKE_INSTALL_PREFIX=$env:INSTALL_DIR ^
+          -D CMAKE_INSTALL_PREFIX=%INSTALL_DIR% ^
           -D CMAKE_BUILD_TYPE=Release ^
           -D ENABLE_FORTRAN=0 ^
           -D ENABLE_PYTHON=0 ^
           -D ENABLE_NETCDF=0 ^
           -D ENABLE_PNG=1 ^
           -D ENABLE_JPG=1 ^
-          -D OPENJPEG_INCLUDE_DIR=$env:CONDA\Library\include\openjpeg-2.3 ^
+          -D OPENJPEG_INCLUDE_DIR=%CONDA%\Library\include\openjpeg-2.4.0 ^
           -D IEEE_LE=1 ^
           -D ENABLE_EXAMPLES=0 ^
           -D ENABLE_MEMFS=0 ^
@@ -75,7 +75,7 @@ jobs:
         copy "%CONDA%\Library\bin\zlib.dll" "%INSTALL_DIR%\bin\"
 
     - name: Run tests
-      run: call "%INSTALL_DIR%\bin\codes_info.exe"
+      run: "%INSTALL_DIR%\bin\codes_info.exe"
 
     - name: Package artifacts
       run: |
