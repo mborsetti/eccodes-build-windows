@@ -11,9 +11,9 @@ jobs:
 
     env:
 #      CONDA: C:\Miniconda37-x64
-      INSTALL_DIR: C:\ECMWF
-      SOURCE_DIRECTORY: eccodes-2.35.0-Source
       SOURCE_TAR: https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.35.0-Source.tar.gz?api=v2
+      SOURCE_DIR: eccodes-2.35.0-Source
+      INSTALL_DIR: C:\ECMWF
 
     steps:
     - name: Checkout repository
@@ -51,23 +51,23 @@ jobs:
 
     - name: Build and install
       run: |
-        cd $env:SOURCE_DIRECTORY
+        cd $env:SOURCE_DIR
         mkdir BUILD
         cd BUILD
-        cmake -G "NMake Makefiles" ^
-          -DCMAKE_INSTALL_PREFIX=$env:INSTALL_DIR ^
-          -DCMAKE_BUILD_TYPE=Release ^
-          -DENABLE_FORTRAN=0 ^
-          -DENABLE_PYTHON=0 ^
-          -DENABLE_NETCDF=0 ^
-          -DENABLE_PNG=1 ^
-          -DENABLE_JPG=1 ^
-          -DOPENJPEG_INCLUDE_DIR=$env:CONDA\Library\include\openjpeg-2.4.0 ^
-          -DIEEE_LE=1 ^
-          -DENABLE_EXAMPLES=0 ^
-          -DENABLE_MEMFS=0 ^
-          -DENABLE_TESTS=0 ^
-          -DENABLE_EXTRA_TESTS=OFF ^
+        cmake -G "NMake Makefiles" `
+          -DCMAKE_INSTALL_PREFIX=$env:INSTALL_DIR `
+          -DCMAKE_BUILD_TYPE=Release `
+          -DENABLE_FORTRAN=0 `
+          -DENABLE_PYTHON=0 `
+          -DENABLE_NETCDF=0 `
+          -DENABLE_PNG=1 `
+          -DENABLE_JPG=1 `
+          -DOPENJPEG_INCLUDE_DIR=$env:CONDA\Library\include\openjpeg-2.4.0 `
+          -DIEEE_LE=1 `
+          -DENABLE_EXAMPLES=0 `
+          -DENABLE_MEMFS=0 `
+          -DENABLE_TESTS=0 `
+          -DENABLE_EXTRA_TESTS=OFF `
           ..
         nmake install
         copy "$env:CONDA\Library\bin\openjp2.dll" "$env:INSTALL_DIR\bin\"
