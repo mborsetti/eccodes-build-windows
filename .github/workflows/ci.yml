@@ -22,21 +22,34 @@ jobs:
     #    dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
     #    dir "C:\Windows\Microsoft.NET\Framework64\"
 
-    - name: Add path to conda
-      run: |
-        Add-Content $env:GITHUB_PATH "$env:CONDA\Scripts"
+    #- name: Add path to conda
+    #  run: |
+    #    Add-Content $env:GITHUB_PATH "$env:CONDA\Scripts"
 
-    - name: Install libnetcdf
-      run: |
-        conda install -c conda-forge libnetcdf --yes
-        echo $env:LD_LIBRARY_PATH
-        echo $env:NetCDF_C_INCLUDE_DIR
-        echo $env:NetCDF_C_LIBRARY
+    #- name: Install libnetcdf
+    #  run: |
+    #    conda install -c conda-forge libnetcdf --yes
+    #    echo $env:LD_LIBRARY_PATH
+    #    echo $env:NetCDF_C_INCLUDE_DIR
+    #    echo $env:NetCDF_C_LIBRARY
     #    Write-Output $env:PATH
     #    conda install -c conda-forge libzlib libpng openjpeg
 
     #- name: Dir
     #  run: dir "$env:CONDA\lib\site-packages"
+
+    - name: Download and install Netcdf
+    # See https://docs.unidata.ucar.edu/netcdf-c/current/winbin.html
+      run: |
+        mkdir $env:GITHUB_WORKSPACE\netcdf
+        cd $env:GITHUB_WORKSPACE\netcdf
+        curl https://downloads.unidata.ucar.edu/netcdf-c/4.9.2/netCDF4.9.2-NC4-64.exe
+        netCDF4.9.2-NC4-64.exe
+        dir
+        Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf"
+        Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf\bin"
+        Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf\lib"
+    
 
     - name: Download and extract source
       uses: actions/checkout@v4
