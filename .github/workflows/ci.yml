@@ -36,7 +36,7 @@ jobs:
     - name: Download and extract source  # pipe it to tar
       run: |
         mkdir -p %RUNNER_TEMP%\Source
-        curl %SOURCE_TAR% | tar xvz -f - -C %RUNNER_TEMP%\Source
+        curl %SOURCE_TAR% | tar -xz -f - -C %RUNNER_TEMP%\Source
       shell: cmd  
 #        curl -o sources.tar.gz $env:SOURCE_TAR
 #        7z x -tgzip -so sources.tar.gz | 7z x -si -ttar
@@ -51,12 +51,13 @@ jobs:
       
     - name: Build and install
       run: |
-        "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
+        "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\vcvars64.bat"
+        echo Visual Studio %VSCMD_VER%
         cd %RUNNER_TEMP%\Source
         mkdir BUILD
         cd BUILD
-        cmake -G "NMake Makefiles" ^
-          -D CMAKE_INSTALL_PREFIX=%RUNNER_TEMP%\Install ^
+        cmake -G "NMake Makefiles" 
+          -D CMAKE_INSTALL_PREFIX=C:\ECMWF ^
           -D CMAKE_BUILD_TYPE=Release ^
           -D ENABLE_FORTRAN=0 ^
           -D ENABLE_PYTHON=0 ^
