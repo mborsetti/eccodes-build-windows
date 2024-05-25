@@ -38,6 +38,7 @@ jobs:
     - name: Download and extract source  # pipe it to tar
       run: |
         curl $env:SOURCE_TAR | tar xvz - -C $env:SOURCE_DIR
+      shell: cmd  
 #        curl -o sources.tar.gz $env:SOURCE_TAR
 #        7z x -tgzip -so sources.tar.gz | 7z x -si -ttar
 
