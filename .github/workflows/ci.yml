@@ -12,13 +12,13 @@ jobs:
     # run on latest https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
     runs-on: windows-latest
 
-    env:
-      SOURCE_TAR: https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.35.0-Source.tar.gz?api=v2
-      SOURCE_DIR: eccodes-2.35.0-Source
+#    env:
+#      SOURCE_TAR: https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.35.0-Source.tar.gz?api=v2
+#      SOURCE_DIR: eccodes-2.35.0-Source
 
     steps:
-    - name: Set up Git
-      run: git config --global core.symlinks true
+#    - name: Set up Git
+#      run: git config --global core.symlinks true
 
     - name: Activate Conda environment
 #      run: |
@@ -34,10 +34,16 @@ jobs:
 #      run: conda config --set always_yes yes
 #      shell: cmd
       
-    - name: Download and extract source  # pipe it to tar
-      run: |
-        curl %SOURCE_TAR% | tar xz -f - -C %RUNNER_TEMP%
-      shell: cmd  
+    - name: Download and extract source
+      uses: actions/checkout@v4
+      with:
+        repository: ecmwf/eccodes@release
+        ref: release/2.35.0
+        path: Source
+      
+#      run: |
+#        curl %SOURCE_TAR% | tar xz -f - -C %RUNNER_TEMP%
+#      shell: cmd  
 #        curl -o sources.tar.gz $env:SOURCE_TAR
 #        7z x -tgzip -so sources.tar.gz | 7z x -si -ttar
 
@@ -61,7 +67,7 @@ jobs:
         set PATH=%PATH%;"C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64"
         echo %PATH%
         nmake /?
-        cd %RUNNER_TEMP%\%SOURCE_DIR%
+        cd %GITHUB_WORKSPACE%\Source
         mkdir BUILD
         cd BUILD
         "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" ^
