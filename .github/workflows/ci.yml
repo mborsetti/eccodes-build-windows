@@ -19,10 +19,10 @@ jobs:
     steps:
     - name: Find nmake
       run: |
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519"
-        echo $env:PATH
-        gci -path C:\ -recurse -filter "nmake.exe"
-
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64"
+        gci -path "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC" -recurse -filter "nmake"
 
     #- name: Add path to conda
     #  run: |
