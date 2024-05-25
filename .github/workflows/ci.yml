@@ -19,10 +19,7 @@ jobs:
     steps:
     - name: Find nmake
       run: |
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC"
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools"
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519"
         echo $env:PATH
         gci -path C:\ -recurse -filter "nmake.exe"
 
@@ -60,10 +57,10 @@ jobs:
         echo Visual Studio %VSCMD_VER%
         git clone --depth 1 https://github.com/ecmwf/ecbuild.git %RUNNER_TEMP%\eccodes
         set PATH=%PATH%;%RUNNER_TEMP%\eccodes
-        set PATH=%PATH%;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64
+        set PATH=%PATH%;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64
         rem echo %PATH%
         nmake /?
-        "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64\nmake.exe" /?
+        "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\nmake.exe" /?
         cd %GITHUB_WORKSPACE%\Source
         mkdir BUILD
         cd BUILD
