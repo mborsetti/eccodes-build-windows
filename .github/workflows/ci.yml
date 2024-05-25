@@ -23,9 +23,8 @@ jobs:
     
     - name: Find nmake
       run: |
-        dir "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools"
         dir "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC"
-        dir "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\"
+        dir "C:\Program Files\Microsoft Visual Studio\2020\Enterprise"
         echo $env:PATH
         gci -path \ -recurse -filter "nmake.exe"
 
