@@ -38,6 +38,7 @@ jobs:
       run: |
         Write-Output $env:CONDA
         dir $env:CONDA
+        dir $env:CONDA\Scripts
         Add-Content $env:GITHUB_PATH $env:CONDA;
 
     - name: Install cmake and other dependencies
