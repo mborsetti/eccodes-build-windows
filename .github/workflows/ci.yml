@@ -48,8 +48,12 @@ jobs:
       run: |
         cd "$env:GITHUB_WORKSPACE\netcdf"
         dir
-        & "netCDF-NC4-64.exe" /S
+        netCDF-NC4-64.exe /S
         dir
+      shell: cmd
+
+    - name: Add Netcdf to path
+      run: |
         Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf"
         Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf\bin"
         Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf\lib"
