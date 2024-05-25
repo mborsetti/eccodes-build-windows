@@ -46,7 +46,7 @@ jobs:
 
     - name: install Netcdf
       run: |
-        cd "$env:GITHUB_WORKSPACE\netcdf"
+        cd "%GITHUB_WORKSPACE%\netcdf"
         dir
         netCDF-NC4-64.exe /S
         dir
