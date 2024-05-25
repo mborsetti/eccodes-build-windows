@@ -20,20 +20,23 @@ jobs:
 #    - name: Set up Git
 #      run: git config --global core.symlinks true
 
-    - name: Activate Conda environment
+#    - name: Install Conda environment
 #      run: |
 #        "%CONDA%\Scripts\activate.bat"
 #      shell: cmd
-      uses: conda-incubator/setup-miniconda@v3.0.4
-      with:
-        miniconda-version: "latest"
-        auto-activate-base: true
-        activate-environment: ""
+#      uses: conda-incubator/setup-miniconda@v3.0.4
+#      with:
+#        miniconda-version: "latest"
+#        auto-activate-base: true
+#        activate-environment: ""
 
 #    - name: Set up Conda
 #      run: conda config --set always_yes yes
 #      shell: cmd
-      
+
+    - name: Add path to conda
+      run: Add-Content $env:GITHUB_PATH "$env:CONDA;"
+
     - name: Download and extract source
       uses: actions/checkout@v4
       with:
@@ -61,13 +64,15 @@ jobs:
     - name: Set up Visual Studio
       run: |
         "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        set GITHUB_PATH=%PATH%
       shell: cmd
+
+    - name: Add path to nmake
+      run: Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64;"
 
     - name: Build and install
       run: |
         echo Visual Studio %VSCMD_VER%
-        rem add path to nmake
-        set PATH=%PATH%;"C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64"
         echo %PATH%
         nmake /?
         cd %GITHUB_WORKSPACE%\Source
