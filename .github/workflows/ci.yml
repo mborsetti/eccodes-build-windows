@@ -17,36 +17,15 @@ jobs:
 #      SOURCE_DIR: eccodes-2.35.0-Source
 
     steps:
-#    - name: Set up Git
-#      run: git config --global core.symlinks true
 
-#    - name: Install Conda environment
-#      run: |
-#        "%CONDA%\Scripts\activate.bat"
-#      shell: cmd
-#      uses: conda-incubator/setup-miniconda@v3.0.4
-#      with:
-#        miniconda-version: "latest"
-#        auto-activate-base: true
-#        activate-environment: ""
+    #- name: Add path to conda
+    #  run: |
+    #    Add-Content $env:GITHUB_PATH $env:CONDA\Scripts;
 
-#    - name: Set up Conda
-#      run: conda config --set always_yes yes
-#      shell: cmd
-
-    - name: Add path to conda
-      run: |
-        echo $env:CONDA
-        dir $env:CONDA
-        dir $env:CONDA\Scripts
-        cat $env:CONDA\Scripts\activate.bat
-        Add-Content $env:GITHUB_PATH $env:CONDA\Scripts;
-
-    - name: Install cmake and other dependencies
-      run: |
-        Write-Output $env:PATH
-        conda install -c conda-forge libzlib libpng openjpeg
-#        conda install -c conda-forge cmake
+    #- name: Install cmake and other dependencies
+    #  run: |
+    #    Write-Output $env:PATH
+    #    conda install -c conda-forge libzlib libpng openjpeg
 
     - name: Download and extract source
       uses: actions/checkout@v4
@@ -58,15 +37,6 @@ jobs:
         # Relative path under $GITHUB_WORKSPACE to place the repositor
         path: Source
       
-#      run: |
-#        curl %SOURCE_TAR% | tar xz -f - -C %RUNNER_TEMP%
-#      shell: cmd  
-#        curl -o sources.tar.gz $env:SOURCE_TAR
-#        7z x -tgzip -so sources.tar.gz | 7z x -si -ttar
-
-#    - name: Install Linux utils from msys
-#      run: conda install -c msys2 m2-bash m2-findutils m2-coreutils m2-grep m2-sed m2-gawk m2-diffutils m2-perl
-
     - name: Set up Visual Studio
       run: |
         "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
@@ -74,13 +44,17 @@ jobs:
       shell: cmd
 
     - name: Add path to nmake
-      run: Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64;"
+      run: Add-Content $env:GITHUB_PATH ";C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64;"
 
     - name: Build and install
       run: |
         echo Visual Studio %VSCMD_VER%
-        echo %PATH%
+        git clone --depth 1 https://github.com/ecmwf/ecbuild.git %RUNNER_TEMP%\eccodes
+        set PATH=%PATH%;%RUNNER_TEMP%\eccodes
+        set PATH=%PATH%;C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64
+        rem echo %PATH%
         nmake /?
+        "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64\nmake.exe" /?
         cd %GITHUB_WORKSPACE%\Source
         mkdir BUILD
         cd BUILD
@@ -89,21 +63,18 @@ jobs:
           -D CMAKE_INSTALL_PREFIX=C:\ECMWF ^
           -D CMAKE_BUILD_TYPE=Release ^
           -D ENABLE_FORTRAN=0 ^
-          -D ENABLE_PYTHON=0 ^
-          -D ENABLE_NETCDF=0 ^
-          -D ENABLE_PNG=1 ^
+          -D ENABLE_NETCDF=1 ^
           -D ENABLE_JPG=1 ^
-          -D OPENJPEG_INCLUDE_DIR=%CONDA%\Library\include\openjpeg-2.4.0 ^
+          -D ENABLE_AEC=0 ^
           -D IEEE_LE=1 ^
-          -D ENABLE_EXAMPLES=0 ^
-          -D ENABLE_MEMFS=0 ^
+          -D ENABLE_MEMFS=1 ^
           -D ENABLE_TESTS=0 ^
           -D ENABLE_EXTRA_TESTS=OFF ^
           ..
-        nmake install
-        copy "%CONDA%\Library\bin\openjp2.dll" "%RUNNER_TEMP%\Install\bin\"
-        copy "%CONDA%\Library\bin\libpng16.dll" "%RUNNER_TEMP%\Install\bin\"
-        copy "%CONDA%\Library\bin\zlib.dll" %RUNNER_TEMP%\Install\bin\"
+        "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64\nmake.exe" install
+#        copy "%CONDA%\Library\bin\openjp2.dll" "%RUNNER_TEMP%\Install\bin\"
+#        copy "%CONDA%\Library\bin\libpng16.dll" "%RUNNER_TEMP%\Install\bin\"
+#        copy "%CONDA%\Library\bin\zlib.dll" %RUNNER_TEMP%\Install\bin\"
       shell: cmd
 
     - name: Run tests
