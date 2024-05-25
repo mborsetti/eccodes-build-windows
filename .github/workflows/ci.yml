@@ -58,7 +58,7 @@ jobs:
 
     - name: Add paths for Visual Studio   # the bat above is not fully working, so we manually add to PATH
       run: |
-         echo Visual Studio $env:VSCMD_VER
+         echo "Visual Studio $env:VSCMD_VER"
          Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\"
          Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64"
          Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE"
