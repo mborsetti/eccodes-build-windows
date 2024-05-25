@@ -48,6 +48,7 @@ jobs:
 
     - name: Build and install
       run: |
+        gci -recurse -filter "nmake.exe"
         echo Visual Studio %VSCMD_VER%
         git clone --depth 1 https://github.com/ecmwf/ecbuild.git %RUNNER_TEMP%\eccodes
         set PATH=%PATH%;%RUNNER_TEMP%\eccodes
