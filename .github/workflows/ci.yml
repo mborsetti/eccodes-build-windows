@@ -53,6 +53,7 @@ jobs:
 
     - name: Set up Visual Studio
       run: |
+        set VSCMD_DEBUG=3
         "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
       shell: cmd
 
