@@ -44,8 +44,8 @@ jobs:
         mkdir $env:GITHUB_WORKSPACE\netcdf
         cd $env:GITHUB_WORKSPACE\netcdf
         dir
-        curl -o netCDF-NC4-64.exe https://downloads.unidata.ucar.edu/netcdf-c/4.9.2/netCDF4.9.2-NC4-64.exe
-        netCDF-NC4-64.exe /S
+        curl -o $env:GITHUB_WORKSPACE\netcdf\netCDF-NC4-64.exe https://downloads.unidata.ucar.edu/netcdf-c/4.9.2/netCDF4.9.2-NC4-64.exe
+        $env:GITHUB_WORKSPACE\netcdf\netCDF-NC4-64.exe /S
         dir
         Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf"
         Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf\bin"
