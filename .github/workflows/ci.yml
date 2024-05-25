@@ -13,8 +13,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    #- name: Find MSVC version (for nmake)
-    #  run: |
+    
+    - name: Find MSVC version (for nmake)
+      run: |
+        dir "C:\Program Files (x86)\Windows Kits\10\Lib\<version>\um\x64"
     #    dir "C:\Program Files (x86)\Windows Kits\10\bin"
     #    dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
     #    dir "C:\Windows\Microsoft.NET\Framework64\"
