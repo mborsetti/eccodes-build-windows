@@ -12,17 +12,10 @@ jobs:
     # run on latest https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
     runs-on: windows-latest
 
-#    env:
-#      SOURCE_TAR: https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.35.0-Source.tar.gz?api=v2
-#      SOURCE_DIR: eccodes-2.35.0-Source
-
     steps:
-    - name: Find nmake
+    - name: Find MSVC version (for nmake)
       run: |
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin"
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64"
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64"
-        gci -path "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC" -recurse -filter "nmake"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
 
     #- name: Add path to conda
     #  run: |
@@ -50,17 +43,16 @@ jobs:
       shell: cmd
 
     - name: Add path to nmake
-      run: Add-Content $env:GITHUB_PATH ";C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64;"
+      run: Add-Content $env:GITHUB_PATH ";C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64;"
 
     - name: Build and install
       run: |
         echo Visual Studio %VSCMD_VER%
         git clone --depth 1 https://github.com/ecmwf/ecbuild.git %RUNNER_TEMP%\eccodes
+        echo %PATH%
         set PATH=%PATH%;%RUNNER_TEMP%\eccodes
         set PATH=%PATH%;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64
-        rem echo %PATH%
-        nmake /?
-        "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\nmake.exe" /?
+        echo %PATH%
         cd %GITHUB_WORKSPACE%\Source
         mkdir BUILD
         cd BUILD
@@ -77,7 +69,7 @@ jobs:
           -D ENABLE_TESTS=0 ^
           -D ENABLE_EXTRA_TESTS=OFF ^
           ..
-        "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64\nmake.exe" install
+        "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\nmake.exe" install
 #        copy "%CONDA%\Library\bin\openjp2.dll" "%RUNNER_TEMP%\Install\bin\"
 #        copy "%CONDA%\Library\bin\libpng16.dll" "%RUNNER_TEMP%\Install\bin\"
 #        copy "%CONDA%\Library\bin\zlib.dll" %RUNNER_TEMP%\Install\bin\"
