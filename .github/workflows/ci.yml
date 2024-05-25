@@ -35,7 +35,13 @@ jobs:
 #      shell: cmd
 
     - name: Add path to conda
-      run: Add-Content $env:GITHUB_PATH "$env:CONDA;"
+      run: Add-Content $env:GITHUB_PATH $env:CONDA;
+
+    - name: Install cmake and other dependencies
+      run: |
+        echo $env:PATH
+        conda install -c conda-forge libzlib libpng openjpeg
+#        conda install -c conda-forge cmake
 
     - name: Download and extract source
       uses: actions/checkout@v4
@@ -55,11 +61,6 @@ jobs:
 
 #    - name: Install Linux utils from msys
 #      run: conda install -c msys2 m2-bash m2-findutils m2-coreutils m2-grep m2-sed m2-gawk m2-diffutils m2-perl
-      
-    - name: Install cmake and other dependencies
-      run: |
-        conda install -c conda-forge libzlib libpng openjpeg
-#        conda install -c conda-forge cmake
 
     - name: Set up Visual Studio
       run: |
