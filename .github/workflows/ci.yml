@@ -51,7 +51,7 @@ jobs:
       
     - name: Build and install
       run: |
-        "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\vcvars64.bat"
+        "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         echo Visual Studio %VSCMD_VER%
         cd %RUNNER_TEMP%\Source
         mkdir BUILD
