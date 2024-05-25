@@ -16,6 +16,7 @@ jobs:
     - name: Find MSVC version (for nmake)
       run: |
         dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
+        dir "C:\Windows\Microsoft.NET\Framework64\"
 
     #- name: Add path to conda
     #  run: |
@@ -36,7 +37,7 @@ jobs:
         # Relative path under $GITHUB_WORKSPACE to place the repositor
         path: Source
 
-    - name: Download and extract build tools
+    - name: Download and extract eccodes build system
       uses: actions/checkout@v4
       with:
         # Repository name with owner. Default: ${{ github.repository }}
@@ -46,21 +47,35 @@ jobs:
         # Relative path under $GITHUB_WORKSPACE to place the repositor
         path: eccodes
 
+    - name: Add path to build system
+      run: Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\eccpdes;"
+
     - name: Set up Visual Studio
       run: |
         "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         set GITHUB_PATH=%PATH%
       shell: cmd
 
-    - name: Add path to nmake
-      run: Add-Content $env:GITHUB_PATH ";C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64;"
+    - name: Add paths for Visual Studio   # the bat above is not fully working, so we manually add to PATH
+      run: |
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64;"
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE;"
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow;"
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;"
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\IntelliCode\CLI;"
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\VCPackages;"
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\;"         
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\bin\Roslyn;"
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64;"
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Team Tools\Performance Tools;"
+         Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Team Tools\Performance Tools\x64;"
+         Add-Content $env:GITHUB_PATH "C:\Windows\Microsoft.NET\Framework64\v4.0.30319;"
 
     - name: Build and install
       run: |
         echo Visual Studio %VSCMD_VER%
         echo %PATH%
-        set PATH=%PATH%;%GITHUB_WORKSPACE%\eccodes
-        set PATH=%PATH%;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64
+        set PATH=%GITHUB_WORKSPACE%\eccodes;%PATH%
         echo %PATH%
         cd %GITHUB_WORKSPACE%\Source
         mkdir BUILD
