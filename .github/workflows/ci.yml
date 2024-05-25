@@ -12,7 +12,7 @@ jobs:
     # run on latest https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
     runs-on: windows-latest
 
-    #steps:
+    steps:
     #- name: Find MSVC version (for nmake)
     #  run: |
     #    dir "C:\Program Files (x86)\Windows Kits\10\bin"
