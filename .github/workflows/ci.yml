@@ -48,7 +48,7 @@ jobs:
         path: eccodes
 
     - name: Add path to ECMWF eccodes build system
-      run: Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\eccpdes;"
+      run: Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\eccodes"
 
     - name: Set up Visual Studio
       run: |
