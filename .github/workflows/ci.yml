@@ -12,10 +12,10 @@ jobs:
     # run on latest https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
     runs-on: windows-latest
 
-    steps:
-    - name: Find MSVC version (for nmake)
-      run: |
-        dir "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\"
+    #steps:
+    #- name: Find MSVC version (for nmake)
+    #  run: |
+    #    dir "C:\Program Files (x86)\Windows Kits\10\bin"
     #    dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
     #    dir "C:\Windows\Microsoft.NET\Framework64\"
 
@@ -59,6 +59,7 @@ jobs:
     - name: Add paths for Visual Studio   # the bat above is not fully working, so we manually add to PATH
       run: |
          echo Visual Studio $env:VSCMD_VER
+         Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\"
          Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64"
          Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE"
          Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow"
