@@ -38,19 +38,22 @@ jobs:
     #- name: Dir
     #  run: dir "$env:CONDA\lib\site-packages"
 
-    - name: Download and install Netcdf
+    - name: Download Netcdf
     # See https://docs.unidata.ucar.edu/netcdf-c/current/winbin.html
       run: |
         mkdir "$env:GITHUB_WORKSPACE\netcdf"
+        curl https://downloads.unidata.ucar.edu/netcdf-c/4.9.2/netCDF4.9.2-NC4-64.exe -o "$env:GITHUB_WORKSPACE\netcdf\netCDF-NC4-64.exe" 
+
+    - name: install Netcdf
+      run: |
         cd "$env:GITHUB_WORKSPACE\netcdf"
-        curl -o netCDF-NC4-64.exe https://downloads.unidata.ucar.edu/netcdf-c/4.9.2/netCDF4.9.2-NC4-64.exe
         dir
         & "netCDF-NC4-64.exe" /S
         dir
         Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf"
         Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf\bin"
         Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\netcdf\lib"
-    
+
 
     - name: Download and extract source
       uses: actions/checkout@v4
