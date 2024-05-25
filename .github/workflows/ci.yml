@@ -36,7 +36,7 @@ jobs:
     - name: Download and extract source  # pipe it to tar
       run: |
         mkdir -p %RUNNER_TEMP%\Source
-        curl %SOURCE_TAR% | tar -xz -f - -C %RUNNER_TEMP%\Source
+        curl %SOURCE_TAR% | tar xz -f - -C %RUNNER_TEMP%\Source
       shell: cmd  
 #        curl -o sources.tar.gz $env:SOURCE_TAR
 #        7z x -tgzip -so sources.tar.gz | 7z x -si -ttar
@@ -46,8 +46,8 @@ jobs:
       
     - name: Install cmake and other dependencies
       run: |
-        conda install -c conda-forge cmake
         conda install libpng libzlib openjpeg
+#        conda install -c conda-forge cmake
 
     - name: Set up Visual Studio
       run: |
@@ -57,10 +57,12 @@ jobs:
     - name: Build and install
       run: |
         echo Visual Studio %VSCMD_VER%
+        echo %PATH%
         cd %RUNNER_TEMP%\Source
+        dir
         mkdir BUILD
         cd BUILD
-        cmake -G "NMake Makefiles" 
+        cmake -G "NMake Makefiles" ^
           -D CMAKE_INSTALL_PREFIX=C:\ECMWF ^
           -D CMAKE_BUILD_TYPE=Release ^
           -D ENABLE_FORTRAN=0 ^
