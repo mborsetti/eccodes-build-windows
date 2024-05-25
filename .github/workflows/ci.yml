@@ -15,7 +15,7 @@ jobs:
     steps:
     - name: Find MSVC version (for nmake)
       run: |
-        dir "C:\Program Files (x86)\Windows Kits\10\bin\"
+        dir "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\"
     #    dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
     #    dir "C:\Windows\Microsoft.NET\Framework64\"
 
