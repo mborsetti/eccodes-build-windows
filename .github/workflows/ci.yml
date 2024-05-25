@@ -53,8 +53,9 @@ jobs:
         path: eccodes
 
     - name: Add path to ECMWF eccodes build system
-      run: Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\eccodes"
-
+      run: |
+        Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\eccodes"
+        Add-Content $env:GITHUB_PATH "$env:CONDA\lib"
     - name: Set up Visual Studio
       run: |
         set VSCMD_DEBUG=3
