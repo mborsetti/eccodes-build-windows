@@ -35,7 +35,7 @@ jobs:
     #    conda install -c conda-forge libzlib libpng openjpeg
 
     - name: Dir
-      run:  dir "$env:CONDA\lib"
+      run:  dir "$env:CONDA\lib\site-packages"
 
 
     - name: Download and extract source
