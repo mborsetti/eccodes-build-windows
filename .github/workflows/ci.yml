@@ -37,8 +37,11 @@ jobs:
     - name: Download and extract source
       uses: actions/checkout@v4
       with:
-        repository: ecmwf/eccodes@release
+        # Repository name with owner. Default: ${{ github.repository }}
+        repository: ecmwf/eccodes
+        # The branch, tag or SHA to checkout. Otherwise, uses the default branch.
         ref: release/2.35.0
+        # Relative path under $GITHUB_WORKSPACE to place the repositor
         path: Source
       
 #      run: |
