@@ -42,9 +42,9 @@ jobs:
         # Repository name with owner. Default: ${{ github.repository }}
         repository: ecmwf/ecbuild
         # The branch, tag or SHA to checkout. Otherwise, uses the default branch.
-        # ref: release/2.35.0
+        # ref: ""
         # Relative path under $GITHUB_WORKSPACE to place the repositor
-        # path: eccodes
+        path: eccodes
 
     - name: Set up Visual Studio
       run: |
