@@ -14,10 +14,10 @@ jobs:
 
     steps:
     
-    - name: Find MSVC version (for nmake)
-      run: |
-        dir "C:\Program Files (x86)\Windows Kits\10\Lib"
-        dir "C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64"
+    #- name: Find MSVC version (for nmake)
+    #  run: |
+    #    dir "C:\Program Files (x86)\Windows Kits\10\Lib"
+    #    dir "C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64"
     #    dir "C:\Program Files (x86)\Windows Kits\10\bin"
     #    dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
     #    dir "C:\Windows\Microsoft.NET\Framework64\"
@@ -26,20 +26,17 @@ jobs:
 #      run: |
 #        Add-Content $env:GITHUB_PATH "$env:CONDA\Scripts"
 
-#    - name: Install libnetcdf
-#      run: |
-#        conda install -c conda-forge libnetcdf --yes
-#        echo $dev:NetCDF_C_INCLUDE_DIR
-#        echo $dev:NetCDF_C_LIBRARY
+    - name: Install libnetcdf
+      run: |
+        conda install -c conda-forge libnetcdf --yes
+        echo $def:LD_LIBRARY_PATH
+    #    echo $dev:NetCDF_C_INCLUDE_DIR
+    #    echo $dev:NetCDF_C_LIBRARY
     #    Write-Output $env:PATH
     #    conda install -c conda-forge libzlib libpng openjpeg
 
-    - name: install netcdf4
-      run: pip install netcdf4
-
     #- name: Dir
     #  run: dir "$env:CONDA\lib\site-packages"
-
 
     - name: Download and extract source
       uses: actions/checkout@v4
