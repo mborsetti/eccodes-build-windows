@@ -24,13 +24,17 @@ jobs:
 
     - name: Add path to conda
       run: |
-        Add-Content $env:GITHUB_PATH $env:CONDA\Scripts;
-
+        Add-Content $env:GITHUB_PATH "$env:CONDA\Scripts"
+        
     - name: Install cmake and other dependencies
       run: |
         conda install -c conda-forge libnetcdf
     #    Write-Output $env:PATH
     #    conda install -c conda-forge libzlib libpng openjpeg
+
+    - name: Dir
+      run:  dir "$env:CONDA\lib"
+
 
     - name: Download and extract source
       uses: actions/checkout@v4
@@ -56,6 +60,7 @@ jobs:
       run: |
         Add-Content $env:GITHUB_PATH "$env:GITHUB_WORKSPACE\eccodes"
         Add-Content $env:GITHUB_PATH "$env:CONDA\lib"
+
     - name: Set up Visual Studio
       run: |
         set VSCMD_DEBUG=3
