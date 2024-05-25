@@ -14,8 +14,6 @@ jobs:
 
     env:
       SOURCE_TAR: https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.35.0-Source.tar.gz?api=v2
-      SOURCE_DIR: eccodes-2.35.0-Source
-      INSTALL_DIR: C:\ECMWF
 
     steps:
     - name: Set up Git
@@ -37,8 +35,8 @@ jobs:
       
     - name: Download and extract source  # pipe it to tar
       run: |
-        mkdir %SOURCE_DIR%
-        curl %SOURCE_TAR% | tar xvz -f - -C %SOURCE_DIR%
+        mkdir -p %RUNNER_TEMP%\Source
+        curl %SOURCE_TAR% | tar xvz -f - -C %RUNNER_TEMP%\Source
       shell: cmd  
 #        curl -o sources.tar.gz $env:SOURCE_TAR
 #        7z x -tgzip -so sources.tar.gz | 7z x -si -ttar
@@ -54,11 +52,11 @@ jobs:
     - name: Build and install
       run: |
         "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
-        cd %SOURCE_DIR%
+        cd %RUNNER_TEMP%\Source
         mkdir BUILD
         cd BUILD
         cmake -G "NMake Makefiles" ^
-          -D CMAKE_INSTALL_PREFIX=%INSTALL_DIR% ^
+          -D CMAKE_INSTALL_PREFIX=%RUNNER_TEMP%\Install ^
           -D CMAKE_BUILD_TYPE=Release ^
           -D ENABLE_FORTRAN=0 ^
           -D ENABLE_PYTHON=0 ^
@@ -73,19 +71,20 @@ jobs:
           -D ENABLE_EXTRA_TESTS=OFF ^
           ..
         nmake install
-        copy "%CONDA%\Library\bin\openjp2.dll" "%INSTALL_DIR%\bin\"
-        copy "%CONDA%\Library\bin\libpng16.dll" "%INSTALL_DIR%\bin\"
-        copy "%CONDA%\Library\bin\zlib.dll" "%INSTALL_DIR%\bin\"
+        copy "%CONDA%\Library\bin\openjp2.dll" "%RUNNER_TEMP%\Install\bin\"
+        copy "%CONDA%\Library\bin\libpng16.dll" "%RUNNER_TEMP%\Install\bin\"
+        copy "%CONDA%\Library\bin\zlib.dll" %RUNNER_TEMP%\Install\bin\"
       shell: cmd
 
     - name: Run tests
       run: |
-        "$env:INSTALL_DIR\bin\codes_info.exe"
+        "$env:RUNNER_TEMP\Install\bin\codes_info.exe"
 
     - name: Package artifacts
       run: |
         cd C:\
-        7z a "$env:GITHUB_WORKSPACE\EcCodes-win-x64.zip" "$env:INSTALL_DIR"
+        7z a "%GITHUB_WORKSPACE%\EcCodes-win-x64.zip" "%RUNNER_TEMP%\Install"
+      shell: cmd
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
