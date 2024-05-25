@@ -46,7 +46,8 @@ jobs:
       
     - name: Install cmake and other dependencies
       run: |
-        conda install libpng libzlib openjpeg
+        conda install libpng openjpeg
+        conda install -c conda-forge libzlib
 #        conda install -c conda-forge cmake
 
     - name: Set up Visual Studio
@@ -62,7 +63,8 @@ jobs:
         dir
         mkdir BUILD
         cd BUILD
-        cmake -G "NMake Makefiles" ^
+        "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" ^
+          -G "NMake Makefiles" ^
           -D CMAKE_INSTALL_PREFIX=C:\ECMWF ^
           -D CMAKE_BUILD_TYPE=Release ^
           -D ENABLE_FORTRAN=0 ^
@@ -77,7 +79,7 @@ jobs:
           -D ENABLE_TESTS=0 ^
           -D ENABLE_EXTRA_TESTS=OFF ^
           ..
-        nmake install
+        "C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64\nmake.exe" install
         copy "%CONDA%\Library\bin\openjp2.dll" "%RUNNER_TEMP%\Install\bin\"
         copy "%CONDA%\Library\bin\libpng16.dll" "%RUNNER_TEMP%\Install\bin\"
         copy "%CONDA%\Library\bin\zlib.dll" %RUNNER_TEMP%\Install\bin\"
