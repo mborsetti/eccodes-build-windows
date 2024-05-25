@@ -24,7 +24,7 @@ jobs:
         dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools"
         dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
         echo $env:PATH
-        gci -path \ -recurse -filter "nmake.exe"
+        gci -path C:\ -recurse -filter "nmake.exe"
 
 
     #- name: Add path to conda
