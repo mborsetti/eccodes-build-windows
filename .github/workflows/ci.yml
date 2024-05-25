@@ -26,9 +26,11 @@ jobs:
       run: |
         Add-Content $env:GITHUB_PATH "$env:CONDA\Scripts"
         
-    - name: Install cmake and other dependencies
+    - name: Install libnetcdf
       run: |
         conda install -c conda-forge libnetcdf
+        echo $dev:NetCDF_C_INCLUDE_DIR
+        echo $dev:NetCDF_C_LIBRARY
     #    Write-Output $env:PATH
     #    conda install -c conda-forge libzlib libpng openjpeg
 
