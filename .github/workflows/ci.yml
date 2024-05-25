@@ -57,13 +57,13 @@ jobs:
     - name: Build and install
       run: |
         echo Visual Studio %VSCMD_VER%
-        echo %PATH%
-        cd %RUNNER_TEMP%\%SOURCE_DIR%
-        dir
-        mkdir BUILD
-        cd BUILD
         rem add path to nmake
         set PATH=%PATH%;"C:\Program Files\Microsoft Visual Studio\2020\Enterprise\VC\Tools\MSVC\17.9.34511.75\bin\Hostx64\x64"
+        echo %PATH%
+        nmake /?
+        cd %RUNNER_TEMP%\%SOURCE_DIR%
+        mkdir BUILD
+        cd BUILD
         "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" ^
           -G "NMake Makefiles" ^
           -D CMAKE_INSTALL_PREFIX=C:\ECMWF ^
