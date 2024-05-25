@@ -19,7 +19,7 @@ jobs:
     steps:
     - name: Find nmake
       run: |
-        gci -recurse -filter "nmake.exe"
+        gci -path \ -recurse -filter "nmake.exe"
 
 
     #- name: Add path to conda
