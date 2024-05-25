@@ -37,6 +37,7 @@ jobs:
     - name: Add path to conda
       run: |
         Write-Output $env:CONDA
+        dir $env:CONDA
         Add-Content $env:GITHUB_PATH $env:CONDA;
 
     - name: Install cmake and other dependencies
